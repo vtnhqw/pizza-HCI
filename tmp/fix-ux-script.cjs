@@ -1,0 +1,1 @@
+﻿const fs=require('fs');const p='tmp/implement-ordering-ux.cjs';let lines=fs.readFileSync(p,'utf8').split(/\r?\n/);const i=lines.findIndex(x=>x.startsWith('swap("return '));lines[i]=lines[i].slice(0,-3)+'`);';fs.writeFileSync(p,lines.join('\n'));

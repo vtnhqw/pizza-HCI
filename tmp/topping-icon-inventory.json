@@ -1,0 +1,26 @@
+[
+  {
+    "repo": "lucide",
+    "paths": [
+      "icons/beef-off.svg",
+      "icons/beef.svg",
+      "icons/cheese.svg",
+      "icons/emirati-dirham.svg",
+      "icons/ham.svg",
+      "icons/hamburger.svg",
+      "icons/hammer.svg"
+    ]
+  },
+  {
+    "repo": "lucide-lab",
+    "paths": [
+      "icons/bottle-champagne.svg",
+      "icons/chameleon.svg",
+      "icons/cheese.svg",
+      "icons/olive.svg",
+      "icons/onion.svg",
+      "icons/pepper-chilli.svg",
+      "icons/sausage.svg"
+    ]
+  }
+]

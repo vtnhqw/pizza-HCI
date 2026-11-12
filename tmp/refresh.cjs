@@ -1,0 +1,32 @@
+﻿const fs=require('node:fs');
+let s=fs.readFileSync('index.html','utf8');
+s=s.replace('<title>Pizza — Pizzazz UI/UX Prototype</title>','<title>Pizzazz — Pizza Hut App Prototype</title>\n<meta name="theme-color" content="#BD242D"/>\n<meta name="description" content="Pizzazz: a Pizza Hut-inspired mobile ordering prototype."/>\n<link rel="icon" type="image/svg+xml" href="assets/pizzazz-mark.svg"/>');
+s=s.replace('</style>','</style>\n<link rel="stylesheet" href="visual.css"/>');
+s=s.replace("const defaultState={view:'home'","const defaultState={view:'login'");
+s=s.replace("if(!['home','product'","if(!['login','home','product'");
+s=s.replace("s.voucherReturn=s.voucherReturn==='rewards'?'rewards':'checkout';return s;", "if(s.view==='home'&&!s.visualRefreshSeen)s.view='login';\n  s.voucherReturn=s.voucherReturn==='rewards'?'rewards':'checkout';return s;");
+s=s.replace(/function foodArt\(p\)\{[^\n]+/, `function foodArt(p){const id=PIZZAS.some(x=>x.id===p.id)?p.id:'margherita';return \`<span class="food-photo" data-food="\${id}" role="img" aria-label="\${esc(p.name)}"></span>\`}`);
+const brand=`<div class="brand"><img src="assets/pizzazz-mark.svg" alt="" width="42" height="42"/><div class="brand-copy"><span class="brand-name">pizzazz<span style="color:var(--red)">.</span></span><small>PIZZA HUT CONCEPT</small></div></div>`;
+s=s.replace('<div class="brand"><span class="brandmark">🍕</span>Pi<span>zza</span></div>',brand);
+const login=`function login(){return \`<section class="welcome" aria-labelledby="welcome-title">${brand}<p class="welcome-kicker">A LITTLE SLICE OF HAPPINESS</p><div class="welcome-visual"><img src="assets/pizza-hero.png" alt="Freshly baked pepperoni pizza with golden crust and basil" width="310" height="310" fetchpriority="high"/><span class="welcome-stamp">\${icon('flame')}Fresh from<br/>the oven</span></div><h1 id="welcome-title">Welcome to<br/><span>your happy place.</span></h1><p class="welcome-copy">Your favourite pizza. Your perfect toppings.<br/>A little more joy in every bite.</p><div class="welcome-actions"><button class="outline" data-action="demo-signup">Sign Up</button><button class="primary" data-action="demo-login">Log In \${icon('arrow-right')}</button></div><button class="guest-link" data-action="demo-login">Explore the menu as a guest</button><p class="welcome-note">Demo experience · no account needed</p></section>\`}
+`;
+s=s.replace('function home(){',login+'function home(){');
+s=s.replace('What are you craving<br/>today?','Good food.<br/><em>Great mood.</em>');
+s=s.replace('<div class="pizza-large">${pizzaSVG([])}</div>','<div class="pizza-large"><img src="assets/pizza-hero.png" alt="Golden pepperoni pizza" width="184" height="184"/></div>');
+s=s.replace('<p>Pick a size, toppings and see the result.</p>','<p>A little extra cheese? Make it yours.</p><button class="hero-cta" data-action="featured-builder">Let’s create ${icon("arrow-right")}</button>');
+s=s.replace("state.category==='Pizza'?'Our pizzas'","state.category==='Pizza'?'Fresh from the oven'");
+s=s.replace('<div class="food-art">${foodArt(p)}</div>','<div class="food-art">${foodArt(p)}</div>');
+s=s.replace('<strong>From ${fmt(p.price)}</strong>','<strong><small>From</small>${fmt(p.price)}</strong>');
+s=s.replace('<div style="height:22px"></div></div>`}', '<p class="photo-note">Illustrative food photography · demo menu prices</p><div style="height:22px"></div></div>`}');
+s=s.replace('({home,product,builder,cart,checkout,confirmation,tracking,orders,rewards,profile,thirdparty,vouchers}', '({login,home,product,builder,cart,checkout,confirmation,tracking,orders,rewards,profile,thirdparty,vouchers}');
+s=s.replace("$('#app').classList.toggle('has-navigation',showBottom);","$('#app').classList.toggle('has-navigation',showBottom);\n  $('#app').classList.toggle('login-view',v==='login');");
+s=s.replace("switch(a){",`switch(a){
+    case 'demo-login':case 'demo-signup':state.visualRefreshSeen=true;nav('home','Home');$('#search')?.focus({preventScroll:true});break;
+    case 'show-login':nav('login');break;
+    case 'featured-builder':{state.selectedId='margherita';const d=state.drafts.margherita;state.builderStep=0;state.size=d?.size||'M';state.toppings=[...(d?.toppings||[])];nav('builder');break;}`);
+s=s.replace('<div class="section-title">Prototype controls</div>', '<div class="section-title">Prototype controls</div><button class="outline full-width" style="margin-bottom:10px" data-action="show-login">Return to welcome screen</button>');
+s=s.replace('Every major flow in this app is interactive.','A warmer visual refresh with realistic food imagery, a welcoming entry screen and interactive ordering.');
+s=s.replace('<li>Browse & search food</li>','<li>One-tap demo login</li><li>Browse & search food</li>');
+s=s.replace('Choose Pizza → Margherita','Log In → Pizza → Margherita');
+fs.writeFileSync('index.html',s);
+console.log('Updated welcome, branding, food photography and presentation.');
