@@ -15,3 +15,9 @@ Menu: “Create a food photography contact sheet for a restaurant app, exactly 2
 ## App logo
 
 `pizzazz-logo.png` is an unchanged copy of the user-provided `Glossy Pizza P Icon.png`. Used for the welcome and Home brand marks, browser favicon, and Apple touch icon. The older SVG is retained as an unused legacy asset.
+
+## Expanded menu
+
+`pasta-drinks-menu.png`: AI-generated illustrative photography, two columns by three rows. Row 1: spaghetti bolognese / chicken Alfredo. Row 2: penne arrabbiata / lemon iced tea. Row 3: orange juice / sparkling water. All cells use warm ivory backgrounds and centered dishes, with no text or branding.
+
+`sides-menu.png`: AI-generated illustrative photography, two columns by two rows. Top: garlic bread / mozzarella sticks with marinara. Bottom: potato wedges / mushroom soup. Warm ivory backgrounds, centered dishes, no branding.

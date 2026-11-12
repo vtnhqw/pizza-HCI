@@ -1,0 +1,1 @@
+﻿const fs=require('fs');let s=fs.readFileSync('index.html','utf8');s=s.replace('Three boxes. One points surprise. Pick yours!','One box wins 20 points. Two boxes have no reward.').replace("'+20 points':'Nice slice!'","'+20 points':'No reward'").replace("?'star':'pizza':'package'","?'star':'minus':'package'");fs.writeFileSync('index.html',s);

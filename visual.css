@@ -98,3 +98,58 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .search-scope{font-size:13px;color:#6E6E73;line-height:1.5;margin:-3px 0 14px}.price small{font-size:15px;font-weight:500;color:#6E6E73}.builder-heading{gap:10px;align-items:center}.builder-heading>span{flex:1;min-width:0;font-size:20px}.builder-exit{white-space:nowrap;font-size:13px;min-height:44px;padding:8px 0 8px 6px}.builder-price{gap:12px;align-items:center}.builder-price span{font-size:15px;font-weight:600}.builder-price small{display:block;color:#6E6E73;font-size:12px;line-height:1.5;font-weight:400;margin-top:4px}.builder-price strong{white-space:nowrap;font-size:22px}
 .progress{margin-bottom:18px}.step{font-size:11px;line-height:1.25;text-align:center;padding-inline:2px}.topopt small{font-size:13px;line-height:1.4;margin-top:4px}.topopt .txt{font-size:14px;min-width:0;overflow-wrap:anywhere}.topping-count{font-size:12px;font-weight:500}.sizeopt span{font-size:13px;color:#6E6E73}.sizeopt b{font-size:13px}.edit-customization{display:block;text-align:left;padding:7px 0;min-height:44px;font-size:13px;font-weight:600}.return-checkout{margin-bottom:16px}.item-options{font-size:12px}.payment-note{font-size:12px}.photo-note{font-size:11px;line-height:1.5}
 @media(max-width:350px){.home-title{font-size:25px}.header{padding-top:10px}.category .emoji{height:52px}.hero{padding:14px;min-height:124px}.hero h3{font-size:21px}.hero .pizza-large{right:-47px;width:140px;height:140px}.item-list .food-desc{padding-inline:10px}.food-desc h4{font-size:14px}.item-list .food-desc p{font-size:13px}.item-list .food-desc strong{font-size:15px;padding-right:0}.menu-action{margin-inline:10px;font-size:13px}.builder-heading{gap:8px;padding-inline:16px}.builder-heading>span{font-size:18px}.builder-exit{font-size:12px}.topopt{padding:11px 16px 11px 9px;gap:6px}.topopt .te{width:23px;flex-basis:23px}.topopt .txt{font-size:13px}.topopt small{font-size:12px}.step{font-size:10px}}
+
+/* Additional pasta and drink photography: two columns, three rows. */
+.food-photo[data-food="bolognese"]{background-image:url('assets/pasta-drinks-menu.png');background-size:200% 300%;background-position:0% 0%}
+.food-photo[data-food="alfredo"]{background-image:url('assets/pasta-drinks-menu.png');background-size:200% 300%;background-position:100% 0%}
+.food-photo[data-food="arrabbiata"]{background-image:url('assets/pasta-drinks-menu.png');background-size:200% 300%;background-position:0% 50%}
+.food-photo[data-food="lemon-tea"]{background-image:url('assets/pasta-drinks-menu.png');background-size:200% 300%;background-position:100% 50%}
+.food-photo[data-food="orange-juice"]{background-image:url('assets/pasta-drinks-menu.png');background-size:200% 300%;background-position:0% 100%}
+.food-photo[data-food="sparkling-water"]{background-image:url('assets/pasta-drinks-menu.png');background-size:200% 300%;background-position:100% 100%}
+
+/* Additional side photography: two columns, two rows. */
+.food-photo[data-food="garlic-bread"]{background-image:url('assets/sides-menu.png');background-size:200% 200%;background-position:0% 0%}
+.food-photo[data-food="mozzarella-sticks"]{background-image:url('assets/sides-menu.png');background-size:200% 200%;background-position:100% 0%}
+.food-photo[data-food="potato-wedges"]{background-image:url('assets/sides-menu.png');background-size:200% 200%;background-position:0% 100%}
+.food-photo[data-food="mushroom-soup"]{background-image:url('assets/sides-menu.png');background-size:200% 200%;background-position:100% 100%}
+/* Rewards: clear balance, redeemable reward first, compact optional game. */
+.rewards-page{padding-bottom:18px}
+.points-card{position:relative;overflow:hidden;border-radius:24px;padding:20px 22px;background:linear-gradient(125deg,#852630,#B83A43);color:#fff;box-shadow:0 10px 24px #92283318}
+.points-card-top{display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:1.8px;font-weight:700}
+.points-emblem{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#ffffff18;color:#FFE0A0}.points-emblem .lucide{width:18px;height:18px}
+.points-balance{display:flex;align-items:baseline;gap:10px;margin-top:3px}.points-balance strong{font-size:48px;line-height:1.1;letter-spacing:-2px}.points-balance>span{font-size:13px;color:#FFE8E6}
+.points-message{font-size:14px;margin:8px 0 17px;font-weight:550}.points-progress{height:5px;overflow:hidden;border-radius:10px;background:#ffffff30}.points-progress>span{display:block;height:100%;background:#FFD68B;border-radius:inherit}
+.points-progress-caption{display:flex;justify-content:space-between;gap:10px;font-size:11px;line-height:1.5;margin-top:8px;color:#FFF0E6}
+.rewards-section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 0 8px}.rewards-section-heading h2{font-size:19px;letter-spacing:-.5px;margin:0}.rewards-section-heading .linkbtn{display:flex;align-items:center;gap:5px;min-height:44px;font-size:12px}.rewards-section-heading .lucide{width:14px;height:14px}
+.perk-card{border:1px solid #E7E3DE;border-radius:20px;background:#fff;overflow:hidden}.perk-details{display:flex;align-items:center;gap:12px;padding:17px 15px}.perk-icon{flex-shrink:0;display:grid;place-items:center;width:52px;height:58px;background:#FBF0E2;color:#A75630;border-radius:14px}.perk-icon .lucide{width:28px;height:28px}.perk-eyebrow{font-size:9px;letter-spacing:1px;font-weight:750;color:#8A593B}.perk-details h3{font-size:18px;letter-spacing:-.5px;margin:5px 0}.perk-details p{font-size:12px;line-height:1.5;margin:0;color:#626268}.perk-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 15px;background:#FFFCF7;border-top:1px dashed #E2D7CA}.perk-footer>span{font-size:12px;color:#626268}.perk-footer strong{font-size:18px;color:var(--ink)}.perk-footer .primary{min-height:44px;padding:10px 15px;font-size:12px}
+.play-card{background:#fff;border:1px solid #E5E5EA;border-radius:20px;padding:17px 15px;margin-top:18px}.play-heading{display:flex;justify-content:space-between;align-items:center;gap:8px}.play-prize{display:flex;align-items:center;gap:4px;border-radius:20px;padding:5px 8px;background:#FFF1D6;color:#815313;font-size:11px;font-weight:700}.play-prize .lucide{width:13px;height:13px}.play-card h2{margin:6px 0;font-size:21px;letter-spacing:-.6px}.play-description{color:#626268;font-size:12px;line-height:1.5;margin:0 0 14px}.play-card .game-grid{gap:9px;margin:0}.play-card .gamebtn{height:88px;background:#FFF8EE;border:1px solid #F0DECA;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#A25635}.box-art{display:grid;place-items:center}.box-art .lucide{width:31px;height:31px;stroke-width:1.6}.box-label{font-size:11px;font-weight:650}.play-card .gamebtn:not(:disabled):hover{background:#FFEBCF;border-color:#CE9A65;transform:translateY(-2px)}.play-card .gamebtn:disabled{opacity:.55}.play-card .gamebtn.revealed{opacity:1;background:#FFF0D2;border-color:#D5A456;color:#7E5118}.play-result{font-size:11px;line-height:1.6;color:#626268;text-align:center;margin:12px 0 0}.play-result.is-win{color:#287147;font-weight:650}.play-card>.outline{margin-top:12px;min-height:44px;font-size:13px}.points-how{font-size:11px;line-height:1.6;color:#626268;margin:15px 3px 0}.points-how .lucide{width:13px;height:13px;vertical-align:-2px;margin-right:3px}
+@media(max-width:350px){.points-card{padding:18px}.perk-details{gap:9px;padding:14px 12px}.perk-icon{width:43px}.perk-details h3{font-size:16px}.perk-footer{padding-inline:12px}.perk-footer .primary{padding-inline:11px}.play-card{padding:15px 12px}}
+@media(prefers-reduced-motion:reduce){.play-card .gamebtn:not(:disabled):hover{transform:none}}
+/* Shared brand lockup: keep the supplied glossy mark prominent and readable. */
+.brand{display:flex;align-items:center;gap:12px;line-height:1;flex-shrink:0}
+.brand img{display:block;width:48px;height:48px;object-fit:contain;border-radius:14px;box-shadow:0 3px 8px #75401D12;flex-shrink:0}
+.brand-copy{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left}
+.brand .brand-name{font-size:29px;font-weight:800;line-height:.95;letter-spacing:-1.3px;color:#292321}
+.brand small{font-size:9px;font-weight:650;line-height:1.2;letter-spacing:1.35px;color:#736760;white-space:nowrap}
+.welcome .brand{gap:13px}.welcome .brand img{width:52px;height:52px;border-radius:15px}.welcome .brand .brand-name{font-size:32px}
+@media(max-width:350px){.header .brand{gap:9px}.header .brand img{width:43px;height:43px;border-radius:12px}.header .brand .brand-name{font-size:27px}.header .brand small{font-size:8px;letter-spacing:1.1px}}
+/* Cart controls: centered touch targets, grouped quantity, separate delete action. */
+.cart-item{align-items:flex-start}.cart-item>div:last-child{min-width:0}.cart-item .para{overflow-wrap:anywhere}
+.cart-item-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;width:100%}
+.cart-item-actions .qty{display:inline-flex;align-items:center;flex-wrap:nowrap;gap:0;margin:0;padding:3px;background:#F5F5F7;border:1px solid #E5E5EA;border-radius:14px}
+.cart-item-actions .qty button{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border:0;border-radius:10px;background:#fff;color:#292321;font-size:16px;line-height:1;box-shadow:0 1px 3px #1D1D1F08}
+.cart-item-actions .qty b{display:grid;place-items:center;min-width:30px;height:44px;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.cart-item-actions button .lucide{display:block;width:20px;height:20px;margin:0;flex-shrink:0;stroke-width:1.8}
+.cart-item-actions .remove-item{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border:1px solid #F1DDE0;border-radius:12px;background:#FFF5F6;color:#AD2936;line-height:1}
+.cart-item-actions .qty button:hover{background:#ECECF1}.cart-item-actions .remove-item:hover{background:#FCE6E9;border-color:#E5BBC1}
+@media(max-width:350px){.cart-item-actions{gap:7px}.cart-item-actions .qty b{min-width:24px}.cart-item-actions .qty{padding:2px}}
+/* One continuous welcome backdrop across the status bar and page content. */
+.device:has(.app.login-view){background:radial-gradient(ellipse at 50% 32%,#F6E6D5 0,#F5F5F7 65%)}
+.device:has(.app.login-view) .topbar,.device .app.login-view,.app.login-view .welcome{background:transparent}
+/* Keep action bars flush with the viewport; safe space belongs inside the bar. */
+.app:has(>.sticky-actions){padding-bottom:0;scroll-padding-bottom:120px}
+.app>.sticky-actions{bottom:0;margin-bottom:0;padding-bottom:28px;background:#F5F5F7;backdrop-filter:none;-webkit-backdrop-filter:none}
+@media(max-width:440px){.app>.sticky-actions{padding-bottom:max(20px,env(safe-area-inset-bottom))}}
+/* Native outlet picker keeps keyboard and mobile selection familiar. */
+.field select{display:block;width:100%;min-height:52px;padding:13px 36px 13px 14px;border:1px solid var(--line);border-radius:14px;background-color:#fff;color:var(--ink);font:inherit;font-size:14px;cursor:pointer}
+.outlet-select{position:relative}.outlet-select select{appearance:none;-webkit-appearance:none;padding-right:48px}.outlet-select>.lucide{position:absolute;top:50%;right:16px;transform:translateY(-50%);width:20px;height:20px;margin:0;color:#626268;pointer-events:none;stroke-width:1.8}

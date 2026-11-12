@@ -1,0 +1,10 @@
+﻿const fs=require('fs'),path=require('path'),assert=require('node:assert/strict');
+let html=fs.readFileSync('index.html','utf8').replace('${icon("info")} Earn 1 point','${icon("star")} Earn 1 point');fs.writeFileSync('index.html',html);
+const source=fs.readFileSync('tests/prototype.test.cjs','utf8');
+const boot=new Function('require','__dirname',source.slice(0,source.indexOf('function pizza('))+'return boot;')(require,path.resolve('tests'));
+const b=boot({view:'rewards',points:40});assert.match(b.api.rewards(),/60 points to your free side/);assert.match(b.api.rewards(),/disabled>Keep collecting/);
+b.api.state.points=120;b.click('redeem');assert.match(b.api.rewards(),/View voucher/);assert.equal(b.api.state.points,20);
+b.click('game-pick',{index:String(b.api.state.gameWin)});assert.match(b.api.rewards(),/You won! 20 points added/);assert.match(b.api.rewards(),/Play again/);
+b.click('game-reset');assert.doesNotMatch(b.api.rewards(),/Play again/);b.click('game-pick',{index:String((b.api.state.gameWin+1)%3)});assert.match(b.api.rewards(),/No points this time/);
+console.log('PASS: insufficient points, redemption, saved voucher, win, reset and loss states.');
+fs.appendFileSync('PROJECT.md','\n## Rewards page refresh (2026-11-12)\n\nRewards now leads with a compact points card and progress towards 100 points, then the free-side voucher with explicit Redeem reward / View voucher / Keep collecting states. A separate compact game card uses numbered boxes, a +20-point prize label and a Play again action after a completed round. Existing reward, voucher, game and checkout-return logic is preserved. Points earning terms remain visible below the game.\n');

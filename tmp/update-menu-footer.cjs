@@ -1,0 +1,1 @@
+﻿const fs=require('fs');const p='index.html';let s=fs.readFileSync(p,'utf8');const old='Illustrative food photography · demo menu prices';if(!s.includes(old))throw new Error('Expected menu footer not found');s=s.replace(old,'Your favourites, made for every craving.');fs.writeFileSync(p,s);

@@ -42,7 +42,7 @@ Statuses describe source-code capabilities, not a claim that every interaction h
 
 | Original / proposed screen | Current function or view | Status | Improvement and important gaps |
 |---|---|---|---|
-| 1. Login / Registration | `login()`; fresh state starts at `login` | Implemented demo | Compact pizza artwork, order-first Start ordering action, secondary Log in / Sign up actions; all open Home directly without credentials, per user request. Profile can return to welcome. No real authentication exists. |
+| 1. Login / Registration | `login()`; fresh state starts at `login` | Implemented demo | Compact pizza artwork, order-first Browse menu action, secondary Log in / Sign up actions; all open Home directly without credentials, per user request. Profile can return to welcome. No real authentication exists. |
 | 2. Order Type Selection | Mode buttons in `home()` and `profile()` | Partial | Delivery, Takeaway and Dine-in are selectable/persisted, but a dedicated entry screen is missing. |
 | 3. Homepage | `home()` | Implemented | Custom Pizzazz logo, search, categories, two-column photo menu and bottom navigation. One restrained interactive pizza-builder banner. |
 | 4. Food Menu / Selection | Food list within `home()` | Partial | Search, four categories, RM prices and details/cart entry exist; dedicated menu view is missing. Original suggested Others category is absent. |
@@ -57,7 +57,6 @@ Statuses describe source-code capabilities, not a claim that every interaction h
 | Order History | `orders()` | Implemented | Local order list with tracking access. No server history. |
 | Loyalty / Rewards | `rewards()` | Implemented | Initial 120 demo points, earning and persistent free-side voucher redemption. Voucher can be applied at checkout and is consumed only on an eligible placed order. |
 | Mini-game | Embedded in `rewards()` | Implemented | Pick one of three boxes, win 20 points, start another round. New rounds choose a random winning box. One reward per round; unlimited demo rounds. |
-| Third-party tracking | `thirdparty()` | Partial | Clearly labelled static external-order example; no integration, linking or live external progress. |
 | Profile | `profile()` | Implemented | Supporting local profile/preferences/reset screen; additional to original nine sketches, not a replacement for login. |
 
 ## Required navigation
@@ -80,7 +79,7 @@ Food Details and Pizza Builder must remain separate. Voucher selection and custo
 - Delivery stages: Order Received → Preparing → Baking → Out for Delivery → Delivered. Takeaway ends with Ready for Pickup → Collected. Dine-in ends with Ready to Serve → Served. Progress advances about every 30 seconds on the visible tracking screen or on manual advance; it does not jump through elapsed stages after being away.
 - Voucher policy (proposed demo rule): 100 points redeem one saved free-side voucher. At most one can be held at a time. It discounts one unit of the lowest-priced side in the cart, leaves delivery fees unchanged, and cannot be applied without a side. Removing the side removes the discount; placing an ineligible order does not consume the saved voucher. Cancellation/navigation does not consume it.
 - The `pizzazz_demo_v2` storage key is retained. Startup normalizes invalid fields/collections and rejects invalid cart/order entries rather than crashing. Reset creates a deep fresh state, so prior cart mutations cannot contaminate default data.
-- All payments, restaurant orders, delivery, notifications and third-party examples are simulated. Never request actual payment credentials or claim real services are connected.
+- All payments, restaurant orders, delivery, notifications are simulated. Never request actual payment credentials or claim real services are connected.
 
 ## Scope alignment and next priorities
 
@@ -142,8 +141,25 @@ Verification: 35 regression checks pass, including cart-edit quantity preservati
 
 ## Order-first entry update (2026-11-12)
 
-Menu pizzas use + Add, opening size selection with a priced Add to Cart action. Customize toppings is optional; saved extras are listed before adding. The existing four-step customization and cart editing flows remain available. Welcome now prioritizes Start ordering, with compact artwork and secondary account actions; authentication remains simulated.
+Menu pizzas use + Add, opening size selection with a priced Add to Cart action. Customize toppings is optional; saved extras are listed before adding. The existing four-step customization and cart editing flows remain available. Welcome now prioritizes Browse menu, with compact artwork and secondary account actions; authentication remains simulated.
 
 ## App branding (2026-11-12)
 
 The user-provided Glossy Pizza P Icon.png is copied unchanged to assets/pizzazz-logo.png and used for welcome/Home branding, the browser favicon and Apple touch icon.
+
+## Tracking scope update (2026-11-12)
+
+Per user direction, external-platform tracking is removed: no third-party demo, screen, entry buttons or unified-tracking promotional copy. Orders and normal in-app tracking remain. Previously saved external-demo views recover to Home through view validation.
+
+## Pasta and drinks expansion (2026-11-12)
+
+Pasta and Drinks now each have four choices. Added Spaghetti Bolognese (RM 14.90), Chicken Alfredo (RM 16.90), Spicy Arrabbiata (RM 12.90), Lemon Iced Tea (RM 5.90), Orange Juice (RM 6.90) and Sparkling Water (RM 4.90). All use existing details, search and direct-add cart flows. Prices and food photography are illustrative. Existing item IDs remain unchanged for saved carts.
+
+## Sides expansion (2026-11-12)
+
+Sides now has six choices: existing wings/fries plus Garlic Bread (RM 6.90), Mozzarella Sticks (RM 9.90), Potato Wedges (RM 7.90), and Mushroom Soup (RM 6.50). Added items use existing search, details, cart and free-side voucher eligibility. Prices are illustrative.
+
+## Rewards page refresh (2026-11-12)
+
+Rewards now leads with a compact points card and progress towards 100 points, then the free-side voucher with explicit Redeem reward / View voucher / Keep collecting states. A separate compact game card uses numbered boxes, a +20-point prize label and a Play again action after a completed round. Existing reward, voucher, game and checkout-return logic is preserved. Points earning terms remain visible below the game.
+`nPickup outlet selection now uses three illustrative Kuala Lumpur outlets: Bukit Bintang (default), KL Sentral, and Bangsar. Selection persists; missing or legacy free-text pickup values default to Bukit Bintang. No geolocation or distance ranking is performed. Delivery and dine-in fields retain their existing behavior.

@@ -37,7 +37,7 @@ test('quick size-to-cart preserves saved extras and supports editing',()=>{
   assert.deepEqual(Array.from(b.api.state.cart[0].toppings),['olives']);
 });
 test('order-first welcome and account actions open the demo menu',()=>{
-  const b=boot();assert.match(b.elements.get('#app').innerHTML,/Start ordering/);
+  const b=boot();assert.match(b.elements.get('#app').innerHTML,/Browse menu/);
   b.click('demo-login');assert.equal(b.api.state.view,'home');
   b.click('show-login');b.click('demo-signup');assert.equal(b.api.state.view,'home');
 });
@@ -90,6 +90,17 @@ test('redeemed sides voucher discounts one side and is consumed only on order',(
 test('empty cart cannot create an order',()=>{const b=boot();b.api.placeOrder();assert.equal(b.api.state.order,null)});
 test('script-like saved addresses are escaped in checkout',()=>{const b=boot();b.api.state.address='\"><img src=x onerror=alert(1)>';assert.ok(!b.api.checkout().includes('<img src=x'))});
 test('a game awards points at most once per round',()=>{const b=boot();b.click('game-pick',{index:String(b.api.state.gameWin)});const points=b.api.state.points;b.click('game-pick',{index:String(b.api.state.gameWin)});assert.equal(b.api.state.points,points)});
+test('each round has exactly one rewarding box and two empty boxes',()=>{
+  for(const winner of [0,1,2]){
+    const gains=[0,1,2].map(pick=>{
+      const b=boot({view:'rewards',gameWin:winner,gameRevealed:[],points:120});
+      b.click('game-pick',{index:String(pick)});
+      if(pick!==winner)assert.match(b.api.rewards(),/No reward/);
+      return b.api.state.points-120;
+    });
+    assert.deepEqual(gains.sort((a,b)=>a-b),[0,0,20]);
+  }
+});
 test('Lucide navigation is rendered as locally available SVG',()=>{const b=boot();b.click('demo-login');assert.match(b.elements.get('#bottom-nav').innerHTML,/<svg[^>]*class="lucide/);assert.match(b.elements.get('#app').innerHTML,/lucide-shopping-cart/)});
 
 test('customization drafts survive reload independently for each pizza',()=>{
@@ -97,10 +108,10 @@ test('customization drafts survive reload independently for each pizza',()=>{
   b.click('product',{id:'pepperoni'});b.click('start-builder');assert.equal(b.api.state.size,'M');assert.equal(b.api.state.toppings.length,0);
   b.click('size',{value:'S'});const restored=boot(b.saved());restored.click('product',{id:'margherita'});restored.click('start-builder');assert.equal(restored.api.state.size,'L');assert.deepEqual(Array.from(restored.api.state.toppings),['cheese']);
 });
-test('fulfillment values are independent and missing pickup blocks order creation',()=>{
-  const b=boot();b.api.state.cart=[pizza()];b.api.state.address='Delivery Road';b.click('mode',{value:'Takeaway'});b.api.placeOrder();assert.equal(b.api.state.order,null);
-  b.listeners.input({target:{id:'address',value:'Demo Pickup',removeAttribute(){}}});b.click('mode',{value:'Dine-in'});b.listeners.input({target:{id:'address',value:'Demo Table 2',removeAttribute(){}}});
-  b.click('mode',{value:'Delivery'});assert.match(b.api.checkout(),/value="Delivery Road"/);b.click('mode',{value:'Takeaway'});b.api.placeOrder();assert.equal(b.api.state.order.address,'Demo Pickup');assert.equal(b.api.state.order.total,15.99);
+test('fulfillment values are independent and pickup selection is saved',()=>{
+  const b=boot();b.api.state.cart=[pizza()];b.api.state.address='Delivery Road';b.click('mode',{value:'Takeaway'});assert.equal(b.api.state.pickupOutlet,'Bukit Bintang — Demo outlet');assert.equal((b.api.checkout().match(/<option /g)||[]).length,3);
+  b.listeners.change({target:{id:'address',value:'KL Sentral — Demo outlet',removeAttribute(){}}});b.click('mode',{value:'Dine-in'});b.listeners.input({target:{id:'address',value:'Demo Table 2',removeAttribute(){}}});
+  b.click('mode',{value:'Delivery'});assert.match(b.api.checkout(),/value="Delivery Road"/);b.click('mode',{value:'Takeaway'});b.api.placeOrder();assert.equal(b.api.state.order.address,'KL Sentral — Demo outlet');assert.equal(b.api.state.order.total,15.99);
 });
 test('removing the eligible side removes its discount without consuming the voucher',()=>{
   const b=boot();b.click('redeem');b.api.state.cart=[pizza(),{id:'fries',name:'French Fries',category:'Sides',size:null,toppings:[],price:5.90,qty:1}];b.click('apply-voucher');b.click('remove',{index:'1'});b.api.placeOrder();assert.equal(b.api.state.order.total,19.99);assert.equal(b.api.state.vouchers.length,1);
@@ -113,7 +124,7 @@ test('completed orders cannot advance past their last stage',()=>{
 });
 test('all views render without exceptions with representative demo data',()=>{
   const b=boot({order:order(),cart:[pizza()]});
-  for(const view of ['home','product','builder','cart','checkout','confirmation','tracking','orders','rewards','profile','thirdparty','vouchers']){
+  for(const view of ['home','product','builder','cart','checkout','confirmation','tracking','orders','rewards','profile','vouchers']){
     b.api.state.view=view;b.api.render();assert.ok(b.elements.get('#app').innerHTML.length>0,view);
     assert.doesNotMatch(b.elements.get('#app').innerHTML,/\b(?:NaN|undefined)\b/,view);
     assert.doesNotMatch(b.elements.get('#app').innerHTML,/[🛒🛵📦🎁👤🍕]/u,view);

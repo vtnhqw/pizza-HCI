@@ -1,0 +1,10 @@
+﻿const fs=require('fs');let s=fs.readFileSync('index.html','utf8');
+s=s.replace(', notifications and third-party integrations are simulated.', ' and notifications are simulated.');
+s=s.replaceAll(",'thirdparty'",'').replaceAll(',thirdparty,',',').replace("thirdparty:'orders',",'');
+s=s.replace(/<div class="section-title">Third-party tracking concept<\/div>.*?<button class="outline" data-action="thirdparty">View example external order<\/button>/,'');
+s=s.replace(/<div class="section-title">Third-party order concept<\/div><button class="outline full-width" data-action="thirdparty">Preview external order tracking<\/button>/,'');
+s=s.replace(/<div class="section-title">One place to track everything<\/div>.*?<button class="outline" style="width:100%" data-action="thirdparty">See third-party demo<\/button>/,'');
+s=s.replace(/^function thirdparty\(\).*\r?\n/m,'').replace(/^    case 'thirdparty':.*\r?\n/m,'');
+fs.writeFileSync('index.html',s);
+let t=fs.readFileSync('tests/prototype.test.cjs','utf8').replace(",'thirdparty'",'');fs.writeFileSync('tests/prototype.test.cjs',t);
+let p=fs.readFileSync('PROJECT.md','utf8').replace(/^\| Third-party tracking.*\r?\n/m,'').replace('notifications and third-party examples','notifications');p+='\n## Tracking scope update (2026-11-12)\n\nPer user direction, external-platform tracking is removed: no third-party demo, screen, entry buttons or unified-tracking promotional copy. Orders and normal in-app tracking remain. Previously saved external-demo views recover to Home through view validation.\n';fs.writeFileSync('PROJECT.md',p);
