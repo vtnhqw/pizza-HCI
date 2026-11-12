@@ -18,6 +18,29 @@ function boot(saved){
   return {api:sandbox.api,elements,listeners,interval:()=>interval(),saved:()=>JSON.parse(stored),click:(action,data={})=>sandbox.api.action({dataset:{action,...data}})};
 }
 function pizza(toppings=[]){return {id:'margherita',name:'Margherita',category:'Pizza',emoji:'🍕',size:'M',toppings,price:15.99,qty:1}}
+test('pizza size selection offers immediate cart entry and optional toppings',()=>{
+  const b=boot();b.click('menu-customize',{id:'margherita'});
+  const markup=b.elements.get('#app').innerHTML;
+  assert.match(markup,/data-action="add-custom"/);
+  assert.match(markup,/Customize toppings/);
+  b.click('size',{value:'L'});b.click('add-custom');
+  assert.equal(b.api.state.cart.length,1);
+  assert.equal(b.api.state.cart[0].size,'L');
+  assert.equal(b.api.state.cart[0].toppings.length,0);
+});
+test('quick size-to-cart preserves saved extras and supports editing',()=>{
+  const b=boot();b.click('menu-customize',{id:'margherita'});b.click('topping',{id:'olives'});b.click('exit-builder');
+  b.click('menu-customize',{id:'margherita'});
+  assert.match(b.elements.get('#app').innerHTML,/Olives/);
+  b.click('add-custom');b.click('edit-cart',{index:'0'});b.click('size',{value:'S'});b.click('add-custom');
+  assert.equal(b.api.state.cart.length,1);assert.equal(b.api.state.cart[0].size,'S');
+  assert.deepEqual(Array.from(b.api.state.cart[0].toppings),['olives']);
+});
+test('order-first welcome and account actions open the demo menu',()=>{
+  const b=boot();assert.match(b.elements.get('#app').innerHTML,/Start ordering/);
+  b.click('demo-login');assert.equal(b.api.state.view,'home');
+  b.click('show-login');b.click('demo-signup');assert.equal(b.api.state.view,'home');
+});
 function order(mode='Delivery',stage=0){return {id:'#TEST',items:[pizza()],total:19.99,mode,address:'Demo location',payment:'Card (demo)',stage,createdAt:Date.now()}}
 
 test('builder keeps selected size and toppings when reopened',()=>{
@@ -109,7 +132,7 @@ test('cross-category search removes the misleading selected category',()=>{
   const b=boot();b.api.state.query='cola';const html=b.api.home();assert.match(html,/Results across all categories/);assert.match(html,/data-food="cola"/);assert.doesNotMatch(html,/class="category active"/);
 });
 test('menu price states the starting size and builder shows the selected size',()=>{
-  const b=boot();assert.match(b.api.home(),/Small from/);b.click('start-builder');assert.match(b.elements.get('#app').innerHTML,/Medium.*10/);assert.match(b.elements.get('#app').innerHTML,/Choose toppings/);
+  const b=boot();assert.match(b.api.home(),/Small from/);b.click('start-builder');assert.match(b.elements.get('#app').innerHTML,/Medium.*10/);assert.match(b.elements.get('#app').innerHTML,/Customize toppings/);
 });
 test('editing a cart pizza preserves quantity and changes the existing item',()=>{
   const b=boot({view:'cart',cart:[{...pizza(),qty:3}]});b.click('edit-cart',{index:'0'});assert.equal(b.api.state.view,'builder');b.click('size',{value:'L'});b.click('topping',{id:'cheese'});b.click('add-custom');

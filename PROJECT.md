@@ -42,16 +42,16 @@ Statuses describe source-code capabilities, not a claim that every interaction h
 
 | Original / proposed screen | Current function or view | Status | Improvement and important gaps |
 |---|---|---|---|
-| 1. Login / Registration | `login()`; fresh state starts at `login` | Implemented demo | Large pizza artwork, logo, Sign Up / Log In buttons and guest entry; all open Home directly without credentials, per user request. Profile can return to welcome. No real authentication exists. |
+| 1. Login / Registration | `login()`; fresh state starts at `login` | Implemented demo | Compact pizza artwork, order-first Start ordering action, secondary Log in / Sign up actions; all open Home directly without credentials, per user request. Profile can return to welcome. No real authentication exists. |
 | 2. Order Type Selection | Mode buttons in `home()` and `profile()` | Partial | Delivery, Takeaway and Dine-in are selectable/persisted, but a dedicated entry screen is missing. |
 | 3. Homepage | `home()` | Implemented | Custom Pizzazz logo, search, categories, two-column photo menu and bottom navigation. One restrained interactive pizza-builder banner. |
 | 4. Food Menu / Selection | Food list within `home()` | Partial | Search, four categories, RM prices and details/cart entry exist; dedicated menu view is missing. Original suggested Others category is absent. |
 | 5. Food Details | `product()` | Implemented | Separate details with description, price and builder/add action. Pizza size selection is inside the builder. |
-| 6. Shopping Cart | `cart()` | Implemented | Customization, quantities, removal, subtotal, fee and total exist. |
+| 6. Shopping Cart | `cart()` | Implemented | Edit pizza size/toppings in place, preserve quantity, cancel safely, adjust quantity/remove, and review subtotal/fee/total. |
 | 7. Delivery / Pickup Selection | Form within `checkout()` | Partial | Separate persisted delivery, pickup and dine-in values; required input validation. Still needs a dedicated screen, real demo outlet choices, address confirmation and instructions. |
 | 8. Voucher / Promotion | `vouchers()` | Implemented | Dedicated free-side voucher view with ownership, eligibility, apply/remove and unavailable states. One demonstration reward type, not a live promotions service. |
 | 9. Checkout / Payment | `checkout()` | Implemented | Explicit order mode, mode-specific location, correctly highlighted simulated payment, customization summary, voucher discount and final total. Richer fulfillment controls remain planned. |
-| Visual Pizza Builder | `builder()` | Implemented | Four steps: size, extra toppings, preview, review. Original menu photo, selection feedback and live price; maximum five extra toppings. Per-pizza drafts survive navigation and reload. |
+| Visual Pizza Builder | `builder()` | Implemented | Four steps: size, extra toppings, your selections, review. Original menu photo, selection feedback and live price; maximum five extra toppings. Per-pizza drafts survive navigation and reload. |
 | Order Confirmation | `confirmation()` | Implemented | Demo order ID, summary and tracking action. |
 | Order Tracking | `tracking()` | Implemented | Mode-specific readiness/completion stages and estimates, manual/automatic progress. Notifications are in-app toasts only; no real tracking or push service. |
 | Order History | `orders()` | Implemented | Local order list with tracking access. No server history. |
@@ -124,3 +124,26 @@ User requested replacing the drawn pizza with the original menu picture. All fou
 Ingredient icons: official Lucide cheese; official Lucide Lab sausage (pepperoni), onion and olive. Lucide core/Lab inventories had no exact mushroom or capsicum match; these two use original ingredient-specific SVG drawings in the same stroke style, rather than generic circles/leaves. Lab license is retained in assets/lucide/LICENSE-lab.
 
 Validation: all 22 regression checks passed; additional smoke checks confirmed the matching photo in all 16 pizza/step combinations, all ingredient icons, and functioning topping selection. Browser visuals were not reverified.
+
+## Ordering UX refinements — 12 November 2026
+
+Implemented all accepted findings from the UX review:
+
+- Menu photo and name are detail buttons. Pizza cards have Customize; ready-made items have Add, which adds the item directly.
+- Both builder Back controls go back one step, or return to the entry screen from step one. Exit/Cancel edit is separate.
+- Pizza cards/details state Small from. Builder total shows the actual selected size, diameter, and per-pizza price including extras. Existing saved size preferences remain intact.
+- Search explicitly says Results across all categories and clears category highlighting while searching.
+- Voucher redemption through Rewards preserves checkout context, including across reload. Apply and return to checkout completes the journey; Rewards offers a return button. Opening Rewards via the bottom bar starts a normal Rewards visit.
+- Cart pizza customization edits preserve quantity. Save updates the original item, merging identical configurations only when the combined quantity is at most 99. Cancel preserves the original cart and independent browsing drafts. Invalid restored edit targets return to Cart; stale edits cannot overwrite another item. Editing a quantity above one clearly states that all pizzas in that cart line change.
+- Preview is now Your selections; Next labels explain the upcoming step. The original menu photo stays unchanged.
+- Increased menu descriptions and topping prices, with explicit full-width card actions and 44px touch targets. Compacted Home heading, category tiles and spacing while keeping section order. Removed the empty Clear search button when no search is active.
+
+Verification: 35 regression checks pass, including cart-edit quantity preservation/cancellation/reload/merging/limits/stale data, search scope, both Back controls, menu actions, price labels and voucher checkout return. JavaScript syntax and local asset presence checked. Native Chrome control was previously not approved, so this update has not received a rendered-browser layout check. A final secondary review was attempted but unavailable due to the reviewer usage limit; the changes were reviewed directly instead.
+
+## Order-first entry update (2026-11-12)
+
+Menu pizzas use + Add, opening size selection with a priced Add to Cart action. Customize toppings is optional; saved extras are listed before adding. The existing four-step customization and cart editing flows remain available. Welcome now prioritizes Start ordering, with compact artwork and secondary account actions; authentication remains simulated.
+
+## App branding (2026-11-12)
+
+The user-provided Glossy Pizza P Icon.png is copied unchanged to assets/pizzazz-logo.png and used for welcome/Home branding, the browser favicon and Apple touch icon.
