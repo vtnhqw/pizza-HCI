@@ -29,3 +29,7 @@ Menu: “Create a food photography contact sheet for a restaurant app, exactly 2
 ## Pizza varieties
 
 `pizza-varieties.png`: generated illustrative 2-by-2 food photo atlas. Top row: Chicken Aloha / Spicy Chicken. Bottom row: Beef Supreme / Beef Meat Lovers. Warm ivory backgrounds, overhead whole-pizza views. These are prototype recipes and prices, not an official restaurant menu.
+
+## Refined logo spacing
+
+`pizzazz-logo-refined.png` is an AI-refined version of the supplied pizza-P artwork, with a more centered mark, balanced inner padding and transparent outer corners. Used across Home, welcome, account forms and browser icons. CSS supplies consistent sizing and wordmark gaps without a second tile shadow. Original `pizzazz-logo.png` is retained unchanged.

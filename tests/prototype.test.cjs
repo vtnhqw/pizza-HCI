@@ -23,7 +23,7 @@ test('pizza size selection offers immediate cart entry and optional toppings',()
   const b=boot();b.click('menu-customize',{id:'margherita'});
   const markup=b.elements.get('#app').innerHTML;
   assert.match(markup,/data-action="add-custom"/);
-  assert.match(markup,/Customize toppings/);
+  assert.match(markup,/Extra toppings/);
   b.click('size',{value:'L'});b.click('add-custom');
   assert.equal(b.api.state.cart.length,1);
   assert.equal(b.api.state.cart[0].size,'L');
@@ -137,14 +137,15 @@ test('menu actions distinguish details, pizza customization and direct add',()=>
   b.click('exit-builder');assert.equal(b.api.state.view,'home');b.click('menu-add',{id:'cola'});assert.equal(b.api.state.cart[0].id,'cola');assert.equal(b.api.state.cart[0].qty,1);
   b.click('menu-add',{id:'margherita'});assert.equal(b.api.state.cart.length,1);
 });
-test('header and footer Back both return one builder step',()=>{
-  for(const action of ['back','builder-prev']){const b=boot();b.click('start-builder');b.click('builder-next');b.click('builder-next');b.click(action);assert.equal(b.api.state.view,'builder');assert.equal(b.api.state.builderStep,1)}
+test('both builder Back controls leave the single-page customizer',()=>{
+ for(const action of ['back','builder-prev']){const b=boot();b.click('menu-customize',{id:'margherita'});b.click('toggle-toppings');b.click(action);assert.equal(b.api.state.view,'home')}
 });
+
 test('cross-category search removes the misleading selected category',()=>{
   const b=boot();b.api.state.query='cola';const html=b.api.home();assert.match(html,/Results across all categories/);assert.match(html,/data-food="cola"/);assert.doesNotMatch(html,/class="category active"/);
 });
 test('menu price states the starting size and builder shows the selected size',()=>{
-  const b=boot();assert.match(b.api.home(),/Small from/);b.click('start-builder');assert.match(b.elements.get('#app').innerHTML,/Medium.*10/);assert.match(b.elements.get('#app').innerHTML,/Customize toppings/);
+  const b=boot();assert.match(b.api.home(),/Small from/);b.click('start-builder');assert.match(b.elements.get('#app').innerHTML,/Medium.*10/);assert.match(b.elements.get('#app').innerHTML,/Extra toppings/);
 });
 test('editing a cart pizza preserves quantity and changes the existing item',()=>{
   const b=boot({view:'cart',cart:[{...pizza(),qty:3}]});b.click('edit-cart',{index:'0'});assert.equal(b.api.state.view,'builder');b.click('size',{value:'L'});b.click('topping',{id:'cheese'});b.click('add-custom');
@@ -377,4 +378,67 @@ test('vouchers have a persistent 30-day expiry and cannot discount after expiry'
 test('expired vouchers may be redeemed again and old undated vouchers migrate once',()=>{
  const clock={now:Date.now()};const legacy=boot({vouchers:[{id:'free-side'}]},clock);const expiry=legacy.api.state.vouchers[0].expiresAt;clock.now+=86400000;assert.equal(boot(legacy.saved(),clock).api.state.vouchers[0].expiresAt,expiry);
  const expired=boot({points:100,vouchers:[{id:'free-side',expiresAt:clock.now-1}]},clock);expired.click('redeem');assert.equal(expired.api.state.points,0);assert.equal(expired.api.state.vouchers.length,1);assert.equal(expired.api.state.vouchers[0].expiresAt,clock.now+30*86400000);
+});
+
+test('mode switching updates controls without replacing the page',()=>{
+ const b=boot({view:'home',visualRefreshSeen:true});const buttons=['Delivery','Takeaway','Dine-in'].map(value=>({dataset:{value},active:false,pressed:null,classList:{toggle(k,v){buttons.find(x=>x.dataset.value===value).active=v}},setAttribute(k,v){this.pressed=v}}));
+ const row={index:null,style:{setProperty(k,v){row.index=v}},querySelectorAll(){return buttons}};b.elements.set('#app .mode-row',row);const original=b.elements.get('#app').innerHTML;
+ b.click('mode',{value:'Dine-in'});assert.equal(b.api.state.mode,'Dine-in');assert.equal(b.elements.get('#app').innerHTML,original);assert.equal(row.index,'2');assert.equal(buttons[2].pressed,'true');assert.equal(buttons[0].pressed,'false');assert.equal(b.saved().mode,'Dine-in');
+ b.click('mode',{value:'Takeaway'});assert.equal(row.index,'1');assert.equal(buttons[1].active,true);assert.equal(buttons[2].active,false);
+});
+
+test('category expansion animates in place and keeps its control accessible',()=>{
+ const b=boot({view:'home',visualRefreshSeen:true});const original=b.elements.get('#app').innerHTML;const animations=[];let expanded=false;const label={textContent:'Show all'};
+ const list={style:{},scrollLeft:0,clientWidth:300,querySelectorAll:()=>[],querySelector:()=>null,getAnimations:()=>[],getBoundingClientRect:()=>({height:expanded?180:90}),classList:{toggle(name,value){if(name==='expanded')expanded=value}},animate(frames,options){const animation={frames,options};animations.push(animation);return animation}};
+ const button={attrs:{},querySelector:()=>label,setAttribute(k,v){this.attrs[k]=v}};
+ b.elements.set('#category-list',list);b.elements.set('.category-expand',button);b.elements.set('#category-hint',{innerHTML:''});
+ b.click('toggle-categories');assert.equal(b.elements.get('#app').innerHTML,original);assert.equal(button.attrs['aria-expanded'],'true');assert.equal(label.textContent,'Show less');assert.equal(animations[0].frames[1].height,'180px');animations[0].onfinish();assert.equal(list.style.overflow,'');
+ b.click('toggle-categories');assert.equal(button.attrs['aria-expanded'],'false');assert.equal(label.textContent,'Show all');assert.equal(animations[1].frames[1].height,'90px');assert.equal(b.saved().categoriesExpanded,false);
+});
+
+test('guest continuation stays in a dedicated footer outside the account form',()=>{
+ for(const view of ['signin','signup']){const b=boot({view});const html=b.elements.get('#app').innerHTML;assert.match(html,/<\/div><footer class="account-footer"><button[^>]*data-action="demo-login">Continue as guest<\/button><\/footer>/);b.click('demo-login');assert.equal(b.api.state.view,'home')}
+});
+
+test('toppings expand inline with one add action, visible selection count and clear extras',()=>{
+ const b=boot();b.click('menu-customize',{id:'margherita'});b.click('toggle-toppings');let html=b.elements.get('#app').innerHTML;assert.equal(b.api.state.view,'builder');assert.match(html,/aria-expanded="true"/);assert.doesNotMatch(html,/Review selections|Customization summary|class="progress"/);assert.equal((html.match(/data-action="add-custom"/g)||[]).length,1);
+ b.click('topping',{id:'mushrooms'});html=b.elements.get('#app').innerHTML;assert.match(html,/1 selected/);assert.match(html,/Mushrooms/);assert.match(html,/RM 17.49/);b.click('toggle-toppings');assert.equal(b.api.state.toppingsExpanded,false);assert.match(b.elements.get('#app').innerHTML,/Mushrooms/);
+ b.click('clear-toppings');assert.equal(b.api.state.toppings.length,0);assert.match(b.elements.get('#app').innerHTML,/RM 15.99/);b.click('add-custom');assert.equal(b.api.state.cart.length,1);assert.equal(b.api.state.cart[0].toppings.length,0);
+});
+test('legacy multi-step drafts recover into the expanded single-page builder',()=>{
+ const b=boot({view:'builder',selectedId:'margherita',builderStep:3,toppings:['cheese']});assert.equal(b.api.state.builderStep,0);assert.equal(b.api.state.toppingsExpanded,true);assert.match(b.elements.get('#app').innerHTML,/Choose your size/);assert.match(b.elements.get('#app').innerHTML,/Extra Cheese/);
+});
+
+test('changing extras preserves the customizer inner scroll position',()=>{
+ const b=boot();b.click('menu-customize',{id:'margherita'});const content={scrollTop:240};b.elements.set('#app .builder-content',content);b.click('topping',{id:'mushrooms'});assert.equal(content.scrollTop,240);assert.equal(b.api.state.view,'builder');
+});
+
+test('Chicken Wings belongs to Chicken and no longer qualifies as a free side',()=>{
+ const b=boot({cart:[{id:'wings',category:'Sides',qty:1}],vouchers:[{id:'free-side'}]});assert.equal(b.api.state.cart[0].category,'Chicken');b.click('category',{value:'Sides'});assert.doesNotMatch(b.api.home(),/data-id="wings"/);b.click('category',{value:'Chicken'});assert.match(b.api.home(),/data-id="wings"/);b.click('apply-voucher');assert.equal(b.api.state.appliedVoucher,null);
+});
+
+test('pizza quantity updates the total and adds the selected number',()=>{
+ const b=boot();b.click('menu-customize',{id:'margherita'});assert.equal(b.api.state.builderQty,1);b.click('builder-qty',{delta:'1'});b.click('builder-qty',{delta:'1'});assert.match(b.elements.get('#app').innerHTML,/RM 47.97/);b.click('add-custom');assert.equal(b.api.state.cart[0].qty,3);assert.equal(b.api.state.cart[0].price,15.99);
+ b.click('close-modal');b.click('menu-customize',{id:'margherita'});assert.equal(b.api.state.builderQty,1);b.click('builder-qty',{delta:'1'});b.click('add-custom');assert.equal(b.api.state.cart[0].qty,5);
+});
+test('editing quantity can cancel or save and survives reload',()=>{
+ const b=boot({cart:[{...pizza(),qty:3}]});b.click('edit-cart',{index:'0'});assert.equal(b.api.state.builderQty,3);b.click('builder-qty',{delta:'-1'});assert.equal(b.api.state.cart[0].qty,3);b.click('back');assert.equal(b.api.state.cart[0].qty,3);
+ b.click('edit-cart',{index:'0'});b.click('builder-qty',{delta:'1'});const r=boot(b.saved());assert.equal(r.api.state.builderQty,4);r.click('add-custom');assert.equal(r.api.state.cart[0].qty,4);
+});
+test('pizza quantity respects minimum, maximum, and combined cart limit',()=>{
+ const b=boot({cart:[{...pizza(),qty:98}]});b.click('menu-customize',{id:'margherita'});b.click('builder-qty',{delta:'-1'});assert.equal(b.api.state.builderQty,1);b.click('builder-qty',{delta:'1'});b.click('add-custom');assert.equal(b.api.state.cart[0].qty,98);b.api.state.builderQty=99;b.click('builder-qty',{delta:'1'});assert.equal(b.api.state.builderQty,99);
+});
+
+test('reorder restores customization and quantities without placing an order',()=>{
+ const b=boot({view:'orders',orders:[{id:'past',stage:4,mode:'Delivery',items:[{...pizza(['mushrooms']),qty:2}],total:34.98,createdAt:1}],cart:[pizza()]});
+ assert.doesNotMatch(b.elements.get('#app').innerHTML,/data-action="reorder"/);
+ b.click('history',{id:'past'});assert.match(b.elements.get('#app').innerHTML,/data-action="reorder"/);
+ b.click('reorder',{id:'past'});assert.equal(b.api.state.view,'cart');assert.equal(b.api.state.cart.length,2);assert.equal(b.api.state.cart[1].qty,2);assert.equal(b.api.state.cart[1].price,17.49);assert.equal(b.api.state.orders.length,1);
+ assert.equal(boot(b.saved()).api.state.cart[1].qty,2);
+});
+test('reorder merges identical items and blocks overflow without partial additions',()=>{
+ const order={id:'past',stage:4,mode:'Takeaway',items:[{...pizza(),qty:2}],total:31.98,createdAt:1};
+ const b=boot({orders:[order],cart:[pizza()]});b.click('reorder',{id:'past'});assert.equal(b.api.state.cart[0].qty,3);
+ b.api.state.cart[0].qty=98;b.click('reorder',{id:'past'});assert.equal(b.api.state.cart[0].qty,98);
+ b.api.state.orders[0].stage=2;b.click('reorder',{id:'past'});assert.equal(b.api.state.cart[0].qty,98);
 });

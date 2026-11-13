@@ -183,3 +183,29 @@ Home now offers a horizontally scrollable category row with a visible Swipe for 
 The Add pizza step now has a native pizza-variety selector grouped into Chicken (BBQ Chicken, Chicken Aloha, Spicy Chicken), Beef (Pepperoni, Beef Supreme, Beef Meat Lovers), and Vegetarian (Margherita, Veggie Supreme). Small starting prices appear in the selector. Size and extra toppings remain separate controls. Browsing preserves independent drafts per pizza; changing variety during cart editing preserves quantity and extras, supports reload, checks the original cart signature, and leaves the original item untouched on Cancel.
 
 Promotions now show the featured item, price, small image and action without the extra marketing headline and paragraph. Pizza previews in the size step are smaller to accommodate the selector. Both static entry pages are synchronized. Verification: 69 Node tests pass; browser visuals remain unverified.
+
+## Separate game and expiring vouchers
+
+Rewards now contains a compact Play game entry instead of the game itself. Pizza Box Game has a dedicated page, a live points balance, win/loss feedback, and Back to Rewards. A win adds 20 points exactly once per round; returning from a checkout reward flow retains that checkout context.
+
+Free-side vouchers expire 30 days after redemption. Both Rewards and Vouchers display the exact expiry in Singapore time. Expired vouchers remain visibly marked Expired but cannot be applied or discounted at order placement. A new redemption replaces an expired voucher. Existing undated saved vouchers receive one 30-day window on migration; subsequent reloads preserve that date. Demo reward points do not expire.
+
+Both `/` and `/1` entries regenerated. Verification: 73 Node tests pass, including winnings persistence, game return navigation, expiry boundary, migration, expired-voucher blocking, and re-redemption. Browser visuals remain unverified.
+
+## Single-page pizza customization
+
+Replaced the four-step builder with a single page containing the grouped pizza selector, size options, inline expandable extra toppings, selected-extra summary and Clear extras. One persistent bottom bar displays the current price and Add to Cart (Save changes during cart editing). The customization area scrolls independently and preserves position when extras change. Both Back controls exit to the original page. Legacy saved builder steps migrate into the same screen with extras expanded. Existing draft, quantity, cart editing, cancellation and merging behavior is retained.
+
+Both entry pages updated; 79 tests pass. Browser visuals remain unverified.
+
+## Pizza quantity and repeat orders (13 November 2026)
+
+The single-page pizza builder now has a minus/count/plus quantity selector beside Add to Cart, with three equal-width centered cells and equal outer padding. Quantity ranges from 1 to 99, updates the total immediately, and keeps the unit price visible. New customizations start at one; cart editing loads the existing quantity, supports saving or cancelling, and persists across reload. The header Back button remains; the redundant footer Back and Exit buttons are removed. Pizza diameter is explicitly labelled in inches. Chicken Wings now belongs to Chicken, not Sides.
+
+Completed orders have Reorder buttons in Order history and order details. Reorder restores items, sizes, extras and quantities into the cart using current catalog prices, merges identical configurations, and preserves existing cart contents. Customers review the cart and complete checkout themselves; no order or payment is placed by Reorder. Active orders cannot be reordered. Quantity overflow blocks the entire operation without partial additions. Past discounts, payment selection and delivery details are not copied.
+
+Both entry pages are generated from the same source. Verification: 85 Node tests, covering quantity totals, editing, persistence, limits, reorder restoration, merging and active-order blocking. Browser rendering remains unverified because browser access was unavailable.
+
+### Reorder placement correction
+
+Order history cards only offer View details. Completed Order details now shows an itemized previous order with quantities, sizes, extras, line totals and paid total, followed by a persistent Reorder action. The completed preparation timeline is replaced by this receipt so customers can review their previous meal first. Active tracking remains unchanged.
