@@ -21,3 +21,11 @@ Menu: “Create a food photography contact sheet for a restaurant app, exactly 2
 `pasta-drinks-menu.png`: AI-generated illustrative photography, two columns by three rows. Row 1: spaghetti bolognese / chicken Alfredo. Row 2: penne arrabbiata / lemon iced tea. Row 3: orange juice / sparkling water. All cells use warm ivory backgrounds and centered dishes, with no text or branding.
 
 `sides-menu.png`: AI-generated illustrative photography, two columns by two rows. Top: garlic bread / mozzarella sticks with marinara. Bottom: potato wedges / mushroom soup. Warm ivory backgrounds, centered dishes, no branding.
+
+## Chicken and dessert menu
+
+`chicken-desserts-menu.png`: generated illustrative menu photography, two columns by three rows. Row 1: chicken tenders / BBQ wings. Row 2: popcorn chicken / chocolate brownies. Row 3: vanilla cheesecake / chocolate chip cookies. Images are illustrative and prices in the app are prototype prices, not an official restaurant menu.
+
+## Pizza varieties
+
+`pizza-varieties.png`: generated illustrative 2-by-2 food photo atlas. Top row: Chicken Aloha / Spicy Chicken. Bottom row: Beef Supreme / Beef Meat Lovers. Warm ivory backgrounds, overhead whole-pizza views. These are prototype recipes and prices, not an official restaurant menu.

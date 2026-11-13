@@ -163,3 +163,23 @@ Sides now has six choices: existing wings/fries plus Garlic Bread (RM 6.90), Moz
 
 Rewards now leads with a compact points card and progress towards 100 points, then the free-side voucher with explicit Redeem reward / View voucher / Keep collecting states. A separate compact game card uses numbered boxes, a +20-point prize label and a Play again action after a completed round. Existing reward, voucher, game and checkout-return logic is preserved. Points earning terms remain visible below the game.
 `nPickup outlet selection now uses three illustrative Kuala Lumpur outlets: Bukit Bintang (default), KL Sentral, and Bangsar. Selection persists; missing or legacy free-text pickup values default to Bukit Bintang. No geolocation or distance ranking is performed. Delivery and dine-in fields retain their existing behavior.
+
+## App-only and annotated entry pages (13 November 2026)
+
+- `/` (`index.html`) shows the centered phone app without the coursework panels.
+- `/1/` (`1/index.html`) shows the same app with both notes panels. Static hosting should redirect the directory URL `/1` to `/1/` and serve `index.html` as its directory index.
+- On narrow screens the annotated panels stack below the app. Both pages share the same CSS, assets, and localStorage key.
+- After editing the main HTML, run `node scripts/build-pages.cjs` to regenerate the annotated entry. The tests check that the two entry pages stay in sync.
+- Deploy the `1` directory alongside the root HTML, CSS, and assets. No live domain deployment was performed in this task.
+
+Validation: all 51 Node tests pass, including entry-page parity and relative asset references. Browser rendering and live-host routing were not verified because Chrome access was unavailable.
+
+## Expandable category navigation
+
+Home now offers a horizontally scrollable category row with a visible Swipe for more hint, partially visible next category, keyboard-focusable items, and Show all / Show less chevron control. Expansion, category choice and menu items survive reload. Chicken adds tenders, BBQ wings and popcorn chicken; Desserts adds brownies, cheesecake and cookies. All six products have local illustrative photography, category promotions, search, product details and direct cart entry. Existing Sides items and voucher eligibility remain unchanged.
+
+## Grouped pizza selection and compact promotions
+
+The Add pizza step now has a native pizza-variety selector grouped into Chicken (BBQ Chicken, Chicken Aloha, Spicy Chicken), Beef (Pepperoni, Beef Supreme, Beef Meat Lovers), and Vegetarian (Margherita, Veggie Supreme). Small starting prices appear in the selector. Size and extra toppings remain separate controls. Browsing preserves independent drafts per pizza; changing variety during cart editing preserves quantity and extras, supports reload, checks the original cart signature, and leaves the original item untouched on Cancel.
+
+Promotions now show the featured item, price, small image and action without the extra marketing headline and paragraph. Pizza previews in the size step are smaller to accommodate the selector. Both static entry pages are synchronized. Verification: 69 Node tests pass; browser visuals remain unverified.

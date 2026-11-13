@@ -27,3 +27,14 @@ The colored pizza preview artwork belongs to this prototype and is separate from
 ## Official Lucide SVG refresh (12 November 2026)
 
 The application's ICONS object now contains official SVG paths retrieved from https://github.com/lucide-icons/lucide/tree/main/icons. The upstream license is retained in assets/lucide/LICENSE and the icon inventory in assets/lucide/README.md. Original Pizzazz branding and generated food imagery are separate assets.
+
+## Payment brand logos
+
+Visa, Mastercard, Touch 'n Go eWallet and GrabPay logos are stored in `assets/payments/` for offline display. Original SVG files were retrieved on 13 November 2026 from Adyen's payment-method image service:
+
+- https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/visa.svg
+- https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/mc.svg
+- https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/touchngo.svg
+- https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/grabpay.svg
+
+Brand marks belong to their respective owners and identify simulated payment choices in this university prototype. No endorsement or payment integration is implied.

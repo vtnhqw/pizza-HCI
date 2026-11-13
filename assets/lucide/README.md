@@ -5,3 +5,7 @@ Official SVG paths from https://github.com/lucide-icons/lucide/tree/main/icons, 
 Icons: house, shopping-cart, shopping-bag, search, plus, minus, chevron-left, arrow-right, check, circle-check, star, user, clipboard-list, truck, utensils, pizza, gift, package, clock, flame, chef-hat, credit-card, wallet, banknote, ticket, map-pin, cup-soda, leaf, circle, sparkles.
 
 Ingredient icons added: cheese (Lucide core); onion, olive, sausage (official Lucide Lab). Source: https://github.com/lucide-icons/lucide-lab/tree/main/icons. Lab license retained in LICENSE-lab.
+
+Settings gear: official Lucide settings.svg retrieved 13 November 2026, embedded unchanged in ICONS.settings.
+
+Category icons: official Lucide drumstick.svg and cookie.svg, embedded unchanged for Chicken and Desserts.
